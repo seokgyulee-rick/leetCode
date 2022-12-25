@@ -9,7 +9,7 @@ public class TwoSortedLists {
         ListNode(int val, ListNode next) { this.val = val; this.next = next; }
     }
     public static void main(String[] args) {
-        mergeTwoLists();
+//        mergeTwoLists();
     }
 
       public static ListNode mergeTwoLists(ListNode list1, ListNode list2){
