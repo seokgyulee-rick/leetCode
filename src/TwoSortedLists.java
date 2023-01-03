@@ -9,43 +9,62 @@ public class TwoSortedLists {
         ListNode(int val, ListNode next) { this.val = val; this.next = next; }
     }
     public static void main(String[] args) {
-//        mergeTwoLists();
+        ListNode list1 = new ListNode(2);
+        ListNode list2 = new ListNode(1);
+        System.out.println(mergeTwoLists(list1, list2).val);
     }
 
       public static ListNode mergeTwoLists(ListNode list1, ListNode list2){
         if(list2 == null) return list1;
         if(list1 == null) return list2;
-          System.out.println(list1.toString());
+        ListNode list1Current = list1;
+        ListNode list2Current = list2;
+        ListNode answer = new ListNode();
+        ListNode answerHelper = answer;
 
-        ListNode answer;
-        boolean listOne = true;
-        boolean listTwo = true;
-//        //초기값 설정
-//          if(  list1.val<=list2.val){
-//              answer = new ListNode(list1.val);
-//              if(list1.next != null) list1 = list1.next;
-//          }else{
-//              answer = new ListNode(list2.val);
-//              if(list2.next != null) list2 = list2.next;
-//          }
-          //반복
-        while(listOne && listTwo){
-            ListNode toCompareA = list1;
-            ListNode toCompareB = list2;
+          while(list1Current != null && list2Current != null){
+              if( list1Current.val > list2Current.val  ){
+                  System.out.println("case 1 : "+ list2Current.val);
+                  answerHelper.next = new ListNode(list2Current.val);
+                  list2Current = list2Current.next;
+              }else{
+                  System.out.println("case 2 : "+ list1Current.val);
+                  answerHelper.next =  new ListNode(list1Current.val);
+                  list1Current = list1Current.next;
+              }
+              answerHelper = answerHelper.next;
+          }
+          if(list1Current == null){
+              answerHelper.next = list2Current;
+          }else if( list2Current == null){
+              answerHelper.next = list1Current;
+          }
 
-            if(toCompareA.val<=toCompareB.val){
-                list1 = new ListNode(list1.val, list2);
-                if(toCompareA.next != null) toCompareA = list1.next;
-                else listOne = false;
-            }else{
-                list2 = new ListNode(list2.val, list1);
-                if(toCompareB.next != null) toCompareB = list2.next;
-                else listTwo = false;
-            }
+          /**
+           * 내 답
+           *
+           * while(list1Current != null || list2Current != null){
+           *             if(list1Current == null){
+           *                 answerHelper.next = new ListNode(list2Current.val);
+           *                 list2Current = list2Current.next;
+           *             }else if( list2Current == null){
+           *                 answerHelper.next = new ListNode(list1Current.val);
+           *                 list1Current = list1Current.next;
+           *             }else if( list1Current.val > list2Current.val  ){
+           *                     System.out.println("case 1 : "+ list2Current.val);
+           *                     answerHelper.next = new ListNode(list2Current.val);
+           *                     list2Current = list2Current.next;
+           *                 }else{
+           *                     System.out.println("case 2 : "+ list1Current.val);
+           *                     answerHelper.next =  new ListNode(list1Current.val);
+           *                     list1Current = list1Current.next;
+           *                 }
+           *             answerHelper = answerHelper.next;
+           *         }
+           */
 
-        }
 
-          if (list1.val<=list2.val) return list1;
-          else return list2;
+        return answer.next;
+
   }
 }
