@@ -7,7 +7,7 @@ public class NQueens {
         solveNQueens(4);
         System.out.println("1");
     }
-    static List<List<String>> answer = new ArrayList<List<String>>();
+    static List<List<String>> answer = new ArrayList<List<String>>(); // 왜 전역?
     static List<List<String>> solveNQueens(int n) {
 
         int [][] map = new int[n][n];
@@ -43,7 +43,7 @@ public class NQueens {
         return answer;
     }
     static boolean isValid (int [][] map, int row, int col){
-
+        return true;
     }
 }
 /**
