@@ -1,57 +1,98 @@
+//import java.util.List;
+//
+//public class CombinationSum {
+//    public static void main(String[] args) {
+//
+//    }
+//
+//   static List<List<Integer>> combinationSum(int[] candidates, int target) {
+//        //조합 갯수 설정
+//       for (int i = 1 ; i <= candidates.length; i++){
+//
+//       }
+//       return new List<List<Integer>> temp;
+//    }
+//    static boolean combinationCalculation (int count, int currentNum){
+//        if(count!=2) {
+////            combinatiionCalculation(count-1, currentNum);
+//        }
+//        return true;
+//    }
+//}
+///**
+// * 모든 조합을 놓고,
+// * 나누기..?
+// * 2,3,6,7
+// *
+// * 조합을 먼저 만든다.
+// *
+// * 하나를 빼고 나머지 조합,
+// * 하나 * 2를 하고 나머지 조합
+// * ...
+// *
+// * 조합 함수 필요 (이건 두개 )
+// *
+// */
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 public class CombinationSum {
     public static void main(String[] args) {
-        combinationSum(new int[] {2,3,6,7}, 7);
-        System.out.println("1");
-        // 2,3,4,6,7
-    }
-
-    /**
-     * 하나 쭉 올리고 다음 꺼 함수로 던지고 계산?
-     */
-   static List<List<Integer>> combinationSum(int[] candidates, int target) {
-        List list = new ArrayList<List<Integer>>();
-        int [] memo = new int[candidates.length];
+        System.out.println(combinationSum(new int[]{2,3,7}, 7).toString());
 
     }
-    static List<List<Integer>> combinationCalculation (List<List<Integer>> list, int currentPos, int[] candidates, int [] memo, int currentNum, int target){
-         if(currentNum + candidates[currentPos] == target){
-             List<Integer> intList = new ArrayList<Integer>();
-             for (int i = 0 ; i < memo.length;i++){
-                 while(memo[i]>0){
-                     intList.add(candidates[i]);
-                     memo[i]--;
-                 }
-             }
-             list.add(intList);
-             return list;
-         }else if(currentNum + candidates[currentPos] < target){
-             //그대로 가기
+    static List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> list = new ArrayList<>(); //정답
 
-             //다음꺼 가기
+        List<List<List<Integer>>> candidateList = new ArrayList<>(); //3중 리스트, 앞선 숫자들을 넣을 곳
+        List<List<Integer>> temp = new ArrayList<>();
+        List<Integer> tempintlist = new ArrayList(Arrays.asList(0)); // comment: DP는 초기화 잘해야함
+        temp.add(tempintlist);
+        System.out.println(temp.toString());
+        candidateList.add(temp);
 
-         }else{
+//        candidateList.add(new ArrayList(){{
+//            add(0);
+//        }}); // [] -> [[]]
 
-         }
+        HashSet<List> answerSet = new HashSet<>();
+        for (int i = 1 ; i <= target; i++){ // 앞 숫자들을 계산하면서 타겟까지 가는 for 문
+            for (int currentPosition = 0; currentPosition < candidateList.size(); currentPosition++) { // 앞선 계산을 하는 for 문
 
-       combinatiionCalculation();
+                List<List<Integer>> tempCandiList = new ArrayList<>();
 
-        return true;
+                for (int currentCandidate : candidates) { // 후보 숫자를 돌면서 덧셈을 통해 현재 타겟을 만들 수 있냐 계산
+
+                    List<Integer> tempList = new ArrayList<>();
+
+                        if (currentPosition + currentCandidate == i) { //
+//                            System.out.println("pre1");
+                            for (List h : candidateList.get(currentPosition)) {
+//                                System.out.println("1");
+                                if(i == target){
+                                    tempList.addAll(h);
+                                    tempList.add(currentCandidate);
+                                    tempList.remove(tempList.indexOf(0));
+
+                                    answerSet.add(tempList);
+                                    list.add(tempList);
+                                }else{
+                                    tempList.addAll(h);
+                                    tempList.add(currentCandidate);
+                                    tempCandiList.add(tempList);
+                                }
+                            }
+                            candidateList.add(tempCandiList);
+
+                        }
+                    }
+                }
+            }
+
+        System.out.println(answerSet.toString());
+        return list;
     }
 }
-/**
- * 모든 조합을 놓고,
- * 나누기..?
- * 2,3,6,7
- *
- * 조합을 먼저 만든다.
- *
- * 하나를 빼고 나머지 조합,
- * 하나 * 2를 하고 나머지 조합
- * ...
- *
- * 조합 함수 필요 (이건 두개 )
- *
- */
