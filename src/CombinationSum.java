@@ -34,22 +34,24 @@
 // *
 // */
 //
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class CombinationSum {
     public static void main(String[] args) {
-        System.out.println(combinationSum(new int[]{2,3,7}, 7).toString());
+        System.out.println(combinationSum(new int[]{2,3,5}, 8).toString());
 
     }
     static List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> list = new ArrayList<>(); //정답
 
-        List [] candidateList = new List [target]; //3중 리스트, 앞선 숫자들을 넣을 곳
+        List [] candidateList = new ArrayList [target+1]; //3중 리스트, 앞선 숫자들을 넣을 곳
+
+        for (int i = 0; i < candidateList.length; i++) {
+            candidateList[i] = new ArrayList<Integer>(); // initialize each element with a new ArrayList
+        }
+
         List<List<Integer>> temp = new ArrayList<>();
-        List<Integer> tempintlist = new ArrayList(Arrays.asList(0)); // comment: DP는 초기화 잘해야함
+        List<Integer> tempintlist = new ArrayList<>(Arrays.asList(0)); // comment: DP는 초기화 잘해야함
         temp.add(tempintlist);
         System.out.println(temp.toString());
         candidateList[0] = temp;
@@ -60,28 +62,27 @@ public class CombinationSum {
 
         HashSet<List> answerSet = new HashSet<>();
         for (int i = 1 ; i <= target; i++){ // 앞 숫자들을 계산하면서 타겟까지 가는 for 문
-            for (int currentPosition = 0; currentPosition < candidateList.length; currentPosition++) { // 앞선 계산을 하는 for 문
+            for (int currentPosition = 0; currentPosition <= i; currentPosition++) { // 앞선 계산을 하는 for 문
 
-                List<List<Integer>> tempCandiList = new ArrayList<>();
+
 
                 for (int currentCandidate : candidates) { // 후보 숫자를 돌면서 덧셈을 통해 현재 타겟을 만들 수 있냐 계산
-
-                    List<Integer> tempList = new ArrayList<>();
-
-                        if (currentPosition + currentCandidate == i) { //
+                    List<List<Integer>> tempCandiList = new ArrayList<>();
+                    if (currentPosition + currentCandidate == i) { //
                             System.out.println("TT! "+currentPosition+" "+ currentCandidate +" = "+ i+ " / "+ candidateList[currentPosition].toString());
 //                            System.out.println("pre1");
-                            for (List h : candidateList[currentPosition]) {
+                            for (int h = 0 ; h <  candidateList[currentPosition].size(); h++) {
+                                List<Integer> tempList = new ArrayList<>();
 //                                System.out.println("1");
                                 if(i == target){
-                                    tempList.addAll(h);
+                                    tempList.addAll((Collection<? extends Integer>) candidateList[currentPosition].get(h));
                                     tempList.add(currentCandidate);
                                     tempList.remove(tempList.indexOf(0));
 
                                     answerSet.add(tempList);
                                     list.add(tempList);
                                 }else{
-                                    tempList.addAll(h);
+                                    tempList.addAll((Collection<? extends Integer>) candidateList[currentPosition].get(h));
                                     tempList.add(currentCandidate);
                                     tempCandiList.add(tempList);
                                 }
@@ -92,7 +93,7 @@ public class CombinationSum {
                 }
             }
 
-        System.out.println(answerSet.toString());
+        System.out.println("answer: "+answerSet.toString());
         return list;
     }
 }
